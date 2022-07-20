@@ -3,8 +3,10 @@ package com.reactnativecommunity.webview;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -30,6 +32,7 @@ import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
 import android.webkit.HttpAuthHandler;
 import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
 import android.webkit.RenderProcessGoneDetail;
 import android.webkit.SslErrorHandler;
 import android.webkit.PermissionRequest;
@@ -804,6 +807,45 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
       int initialRequestedOrientation = activity.getRequestedOrientation();
 
       mWebChromeClient = new RNCWebChromeClient(reactContext, webView) {
+
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
+          AlertDialog dialog = new AlertDialog.Builder(view.getContext()).
+                  setIcon(ContextCompat.getDrawable(reactContext, R.drawable.ic_alert)).
+                  setTitle("알림").
+                  setMessage(message).
+                  setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                        result.confirm();
+                      }
+                  }).create();
+          dialog.show();
+          return true;
+        } 
+        
+        @Override
+        public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
+          AlertDialog dialog = new AlertDialog.Builder(view.getContext()).
+                  setIcon(ContextCompat.getDrawable(reactContext, R.drawable.ic_alert)).
+                  setTitle("알림").
+                  setMessage(message).
+                  setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                        result.confirm();
+                      }
+                  }).
+                  setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                        result.cancel();
+                      }
+                  }).create();
+          dialog.show();
+          return true;
+        }
+
         @Override
         public Bitmap getDefaultVideoPoster() {
           return Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
@@ -890,6 +932,44 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
       }
 
       mWebChromeClient = new RNCWebChromeClient(reactContext, webView) {
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
+          AlertDialog dialog = new AlertDialog.Builder(view.getContext()).
+                  setIcon(ContextCompat.getDrawable(reactContext, R.drawable.ic_alert)).
+                  setTitle("알림").
+                  setMessage(message).
+                  setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                        result.confirm();
+                      }
+                  }).create();
+          dialog.show();
+          return true;
+        } 
+        
+        @Override
+        public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
+          AlertDialog dialog = new AlertDialog.Builder(view.getContext()).
+                  setIcon(ContextCompat.getDrawable(reactContext, R.drawable.ic_alert)).
+                  setTitle("알림").
+                  setMessage(message).
+                  setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                        result.confirm();
+                      }
+                  }).
+                  setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                        result.cancel();
+                      }
+                  }).create();
+          dialog.show();
+          return true;
+        } 
+
         @Override
         public Bitmap getDefaultVideoPoster() {
           return Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
