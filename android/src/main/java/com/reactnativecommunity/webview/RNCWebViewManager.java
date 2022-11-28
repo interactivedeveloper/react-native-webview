@@ -815,13 +815,17 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
       int initialRequestedOrientation = activity.getRequestedOrientation();
 
       mWebChromeClient = new RNCWebChromeClient(reactContext, webView) {
-
         @Override
         public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
           AlertDialog dialog = new AlertDialog.Builder(view.getContext()).
                   setIcon(ContextCompat.getDrawable(reactContext, R.drawable.ic_alert)).
                   setTitle("알림").
                   setMessage(message).
+                  setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    public void onCancel(final DialogInterface dialog) {
+                      result.confirm();
+                    }
+                  }).
                   setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                       @Override
                       public void onClick(DialogInterface dialog, int which) {
@@ -838,6 +842,11 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                   setIcon(ContextCompat.getDrawable(reactContext, R.drawable.ic_alert)).
                   setTitle("알림").
                   setMessage(message).
+                  setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    public void onCancel(final DialogInterface dialog) {
+                      result.cancel();
+                    }
+                  }).
                   setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                       @Override
                       public void onClick(DialogInterface dialog, int which) {
@@ -944,6 +953,11 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                   setIcon(ContextCompat.getDrawable(reactContext, R.drawable.ic_alert)).
                   setTitle("알림").
                   setMessage(message).
+                  setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    public void onCancel(final DialogInterface dialog) {
+                      result.confirm();
+                    }
+                  }).
                   setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                       @Override
                       public void onClick(DialogInterface dialog, int which) {
@@ -960,6 +974,11 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                   setIcon(ContextCompat.getDrawable(reactContext, R.drawable.ic_alert)).
                   setTitle("알림").
                   setMessage(message).
+                  setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    public void onCancel(final DialogInterface dialog) {
+                      result.cancel();
+                    }
+                  }).
                   setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                       @Override
                       public void onClick(DialogInterface dialog, int which) {
@@ -974,7 +993,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                   }).create();
           dialog.show();
           return true;
-        } 
+        }
 
         @Override
         public Bitmap getDefaultVideoPoster() {
